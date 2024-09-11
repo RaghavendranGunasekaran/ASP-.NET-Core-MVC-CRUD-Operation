@@ -25,29 +25,39 @@ namespace BankTranscation.Controllers
         }
 
         // GET: Transaction/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var transactions = await _context.Transactions
-                .FirstOrDefaultAsync(m => m.TransactionID == id);
-            if (transactions == null)
-            {
-                return NotFound();
-            }
+        //    var transactions = await _context.Transactions
+        //        .FirstOrDefaultAsync(m => m.TransactionID == id);
+        //    if (transactions == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(transactions);
-        }
+        //    return View(transactions);
+        //}
 
         // GET: Transaction/AddOrEdit
-        public IActionResult AddOrEdit()
+        public IActionResult AddOrEdit(int id = 0)
         {
-
             Transactions transactions = new Transactions();
-            return View(transactions);
+            if (id == 0)
+            {
+               
+                return View(transactions);
+            }
+            else
+            {
+                
+                return View(_context.Transactions.Find(id));
+
+            }
+            
         }
 
         // POST: Transaction/Create
@@ -59,8 +69,17 @@ namespace BankTranscation.Controllers
         {
             if (ModelState.IsValid)
             {
-                transactions.Date = DateTime.Now;
-                _context.Add(transactions);
+
+                if (transactions.TransactionID == 0)
+                {
+                    transactions.Date = DateTime.Now;
+                    _context.Add(transactions);
+                }
+                else
+                {
+                    _context.Update(transactions);
+                }
+               
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -68,73 +87,73 @@ namespace BankTranscation.Controllers
         }
 
         // GET: Transaction/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var transactions = await _context.Transactions.FindAsync(id);
-            if (transactions == null)
-            {
-                return NotFound();
-            }
-            return View(transactions);
-        }
+        //    var transactions = await _context.Transactions.FindAsync(id);
+        //    if (transactions == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(transactions);
+        //}
 
         // POST: Transaction/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TransactionID,AccountNumber,BeneficiaryName,BankName,IFSCCode,Amount,Date")] Transactions transactions)
-        {
-            if (id != transactions.TransactionID)
-            {
-                return NotFound();
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("TransactionID,AccountNumber,BeneficiaryName,BankName,IFSCCode,Amount,Date")] Transactions transactions)
+        //{
+        //    if (id != transactions.TransactionID)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(transactions);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TransactionsExists(transactions.TransactionID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(transactions);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(transactions);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!TransactionsExists(transactions.TransactionID))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(transactions);
+        //}
 
         // GET: Transaction/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var transactions = await _context.Transactions
-                .FirstOrDefaultAsync(m => m.TransactionID == id);
-            if (transactions == null)
-            {
-                return NotFound();
-            }
+        //    var transactions = await _context.Transactions
+        //        .FirstOrDefaultAsync(m => m.TransactionID == id);
+        //    if (transactions == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(transactions);
-        }
+        //    return View(transactions);
+        //}
 
         // POST: Transaction/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -151,9 +170,9 @@ namespace BankTranscation.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TransactionsExists(int id)
-        {
-            return _context.Transactions.Any(e => e.TransactionID == id);
-        }
+        //private bool TransactionsExists(int id)
+        //{
+        //    return _context.Transactions.Any(e => e.TransactionID == id);
+        //}
     }
 }

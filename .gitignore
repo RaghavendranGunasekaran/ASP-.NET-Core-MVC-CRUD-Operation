@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Views/Transaction/Edit.cshtml
+/Views/Transaction/Details.cshtml
+/Views/Transaction/Delete.cshtml
